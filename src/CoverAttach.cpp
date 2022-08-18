@@ -13,18 +13,20 @@ void CoverAttach::on_done(HWND, bool was_aborted)
 
 void CoverAttach::run(threaded_process_status& status, abort_callback& abort)
 {
-	auto api = file_lock_manager::get();
+	auto lock_api = file_lock_manager::get();
+
 	const size_t count = m_handles.get_count();
+	size_t index{};
 	std::set<pfc::string8> paths;
 
-	for (const size_t i : std::views::iota(0U, count))
+	for (auto&& handle : m_handles)
 	{
 		abort.check();
 
-		const pfc::string8 path = m_handles[i]->get_path();
+		const pfc::string8 path = handle->get_path();
 		if (!paths.emplace(path).second) continue;
 
-		status.set_progress(i + 1, count);
+		status.set_progress(++index, count);
 		status.set_item_path(path);
 
 		album_art_editor::ptr ptr;
@@ -32,7 +34,7 @@ void CoverAttach::run(threaded_process_status& status, abort_callback& abort)
 
 		try
 		{
-			auto lock = api->acquire_write(path, abort);
+			auto lock = lock_api->acquire_write(path, abort);
 			album_art_editor_instance_ptr aaep = ptr->open(nullptr, path, abort);
 			aaep->set(m_art_guid, m_data, abort);
 			aaep->commit(abort);

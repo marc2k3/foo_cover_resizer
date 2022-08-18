@@ -22,7 +22,8 @@ namespace resizer
 			m_combo_format = GetDlgItem(IDC_COMBO_FORMAT);
 			m_edit_size = GetDlgItem(IDC_EDIT_SIZE);
 
-			for (const size_t i : std::views::iota(0U, album_art_ids::num_types()))
+			const size_t count = album_art_ids::num_types();
+			for (size_t i = 0; i < count; ++i)
 			{
 				m_combo_type.AddString(string_wide_from_utf8_fast(album_art_ids::query_capitalized_name(i)));
 			}
@@ -37,7 +38,7 @@ namespace resizer
 
 			if (m_show_size)
 			{
-				pfc::setWindowText(m_edit_size, std::to_string(settings::size).c_str());
+				pfc::setWindowText(m_edit_size, pfc::format_uint(settings::size));
 			}
 			else
 			{
@@ -56,8 +57,7 @@ namespace resizer
 		int GetSize()
 		{
 			pfc::string8 str = pfc::getWindowText(m_edit_size);
-			if (pfc::string_is_numeric(str)) return std::stoi(str.get_ptr());
-			return 0;
+			return pfc::atoui_ex(str, str.get_length());
 		}
 
 		void OnCloseCmd(UINT, int nID, CWindow)

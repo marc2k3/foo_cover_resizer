@@ -19,17 +19,17 @@ void CoverConverterResizer::run(threaded_process_status& status, abort_callback&
 	auto lock_api = file_lock_manager::get();
 
 	const size_t count = m_handles.get_count();
+	size_t index{}, success{};
 	std::set<pfc::string8> paths;
-	uint32_t success{};
 
-	for (const size_t i : std::views::iota(0U, count))
+	for (auto&& handle : m_handles)
 	{
 		abort.check();
 
-		const pfc::string8 path = m_handles[i]->get_path();
+		const pfc::string8 path = handle->get_path();
 		if (!paths.emplace(path).second) continue;
 
-		status.set_progress(i + 1, count);
+		status.set_progress(++index, count);
 		status.set_item_path(path);
 
 		if (!album_art_extractor::g_get_interface(extractor_ptr, path)) continue;

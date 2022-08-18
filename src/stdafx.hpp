@@ -4,12 +4,7 @@
 #define WINVER _WIN32_WINNT_WIN7
 #define NOMINMAX
 
-#include <algorithm>
-#include <array>
-#include <map>
-#include <ranges>
 #include <set>
-#include <string>
 
 #include <foobar2000/helpers/foobar2000+atl.h>
 #include <foobar2000/helpers/DarkMode.h>
