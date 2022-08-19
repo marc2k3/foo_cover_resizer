@@ -7,8 +7,8 @@ class CoverConverterResizer : public threaded_process_callback
 public:
 	enum class Action
 	{
-		resize,
-		convert,
+		Resize,
+		Convert,
 	};
 
 	CoverConverterResizer(Action action, metadb_handle_list_cref handles, Format format, const GUID& art_guid);

@@ -50,7 +50,7 @@ public:
 
 			const Format format = formats[settings::format].id;
 			const GUID art_guid = album_art_ids::query_type(settings::type);
-			auto cb = fb2k::service_new<CoverConverterResizer>(CoverConverterResizer::Action::resize, handles, format, art_guid);
+			auto cb = fb2k::service_new<CoverConverterResizer>(CoverConverterResizer::Action::Resize, handles, format, art_guid);
 			threaded_process::get()->run_modeless(cb, threaded_process_flags, hwnd, "Resizing covers...");
 		}
 		else if (index == 1)

@@ -51,11 +51,11 @@ void CoverConverterResizer::run(threaded_process_status& status, abort_callback&
 				continue;
 			}
 
-			if (m_action == Action::convert)
+			if (m_action == Action::Convert)
 			{
 				if (FAILED(encode(m_format, source.get(), data))) continue;
 			}
-			else
+			else if (m_action == Action::Resize)
 			{
 				wil::com_ptr_t<IWICBitmapScaler> scaler;
 				if (FAILED(resize(source.get(), scaler))) continue;
