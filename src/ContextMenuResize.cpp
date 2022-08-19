@@ -70,7 +70,7 @@ public:
 			if (data.is_valid())
 			{
 				const GUID art_guid = album_art_ids::query_type(settings::type);
-				auto cb = fb2k::service_new<CoverAttach>(handles, data, art_guid);
+				auto cb = fb2k::service_new<CoverAttachRemove>(handles, data, art_guid);
 				threaded_process::get()->run_modeless(cb, threaded_process_flags, hwnd, "Attaching cover...");
 			}
 		}

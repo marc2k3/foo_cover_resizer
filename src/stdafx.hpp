@@ -19,6 +19,5 @@ using namespace pfc::stringcvt;
 #include "resource.hpp"
 #include "DialogSettings.hpp"
 #include "Helpers.hpp"
-#include "CoverAttach.hpp"
+#include "CoverAttachRemove.hpp"
 #include "CoverConverterResizer.hpp"
-#include "CoverRemover.hpp"
