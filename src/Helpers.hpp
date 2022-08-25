@@ -1,7 +1,7 @@
 #pragma once
 
 #ifdef NDEBUG
-#include <libwebp/encode.h>
+#include <lib/libwebp/encode.h>
 #ifdef _WIN64
 #pragma comment(lib, "../foobar2000-sdk/lib/libwebp/libwebp-x64.lib")
 #else
