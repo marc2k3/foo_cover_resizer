@@ -22,11 +22,11 @@ jobs:
 
     - name: Set up MSBuild
       uses: microsoft/setup-msbuild@v1.1
-      
+
     - name: Set up vcpkg
       run: |
         vcpkg integrate install
-        vcpkg install wil wtl --triplet ${{ matrix.triplet }}
+        vcpkg install libwebp wil wtl --triplet ${{ matrix.triplet }}
 
     - name: Build
       run: msbuild /m '/p:Platform=${{ matrix.platform }};Configuration=${{ matrix.configuration }}' src\${{ matrix.project }}.sln

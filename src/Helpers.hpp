@@ -1,13 +1,6 @@
 #pragma once
 
-#ifdef NDEBUG
-#include <lib/libwebp/encode.h>
-#ifdef _WIN64
-#pragma comment(lib, "../foobar2000-sdk/lib/libwebp/libwebp-x64.lib")
-#else
-#pragma comment(lib, "../foobar2000-sdk/lib/libwebp/libwebp-Win32.lib")
-#endif
-#endif
+#include <webp/encode.h>
 
 namespace resizer
 {
@@ -24,7 +17,6 @@ namespace resizer
 
 	static HRESULT encode_webp(IWICBitmapSource* source, const WICRect& rect, album_art_data_ptr& data)
 	{
-#ifdef NDEBUG
 		uint8_t* ptr = nullptr;
 		uint8_t* output = nullptr;
 		uint32_t size{}, stride{};
@@ -43,7 +35,6 @@ namespace resizer
 			WebPFree(output);
 			return S_OK;
 		}
-#endif
 		return E_FAIL;
 	}
 
