@@ -48,8 +48,8 @@ namespace resizer
 
 			CenterWindow();
 
-			AddDialogWithControls(*this);
 			SetDark(fb2k::isDarkMode());
+			AddDialogWithControls(*this);
 
 			return TRUE;
 		}
