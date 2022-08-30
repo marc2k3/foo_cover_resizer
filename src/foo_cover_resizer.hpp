@@ -53,8 +53,8 @@ namespace resizer
 
 	namespace settings
 	{
-		extern cfg_int type;
-		extern cfg_int format;
-		extern cfg_int size;
+		extern cfg_var_legacy::cfg_int type;
+		extern cfg_var_legacy::cfg_int format;
+		extern cfg_var_legacy::cfg_int size;
 	}
 }
