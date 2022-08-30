@@ -33,6 +33,7 @@ jobs:
       run: |
         msbuild ${{ matrix.project }}\src\${{ matrix.project }}.sln -m -p:Platform=Win32 -p:Configuration=${{ matrix.configuration }}
         copy ${{ matrix.project }}\src\Win32\${{ matrix.configuration }}\${{ matrix.project }}.dll component
+        copy ${{ matrix.project }}\src\Win32\${{ matrix.configuration }}\webp.dll component
         copy ${{ matrix.project }}\src\Win32\${{ matrix.configuration }}\${{ matrix.project }}.pdb component
         cd ${{ matrix.project }} && git clean -fdx && git submodule foreach --recursive git clean -fdx
 
@@ -40,6 +41,7 @@ jobs:
       run: |
         msbuild ${{ matrix.project }}\src\${{ matrix.project }}.sln -m -p:Platform=x64 -p:Configuration=${{ matrix.configuration }}
         copy ${{ matrix.project }}\src\x64\${{ matrix.configuration }}\${{ matrix.project }}.dll component\x64
+        copy ${{ matrix.project }}\src\x64\${{ matrix.configuration }}\webp.dll component\x64
         copy ${{ matrix.project }}\src\x64\${{ matrix.configuration }}\${{ matrix.project }}.pdb component\x64
 
     - name: Upload with pdb
