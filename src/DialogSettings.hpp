@@ -2,7 +2,7 @@
 
 namespace resizer
 {
-	class CDialogSettings : public CDialogImpl<CDialogSettings>, public fb2k::CDarkModeHooks
+	class CDialogSettings : public CDialogImpl<CDialogSettings>
 	{
 	public:
 		CDialogSettings(bool show_size) : m_show_size(show_size) {}
@@ -46,11 +46,8 @@ namespace resizer
 				m_edit_size.ShowWindow(SW_HIDE);
 			}
 
+			m_hooks.AddDialogWithControls(*this);
 			CenterWindow();
-
-			SetDark(fb2k::isDarkMode());
-			AddDialogWithControls(*this);
-
 			return TRUE;
 		}
 
@@ -85,5 +82,6 @@ namespace resizer
 		CComboBox m_combo_format, m_combo_type;
 		CEdit m_edit_size;
 		bool m_show_size{};
+		fb2k::CCoreDarkModeHooks m_hooks;
 	};
 }

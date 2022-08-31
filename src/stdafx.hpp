@@ -7,7 +7,7 @@
 #include <set>
 
 #include <foobar2000/helpers/foobar2000+atl.h>
-#include <foobar2000/helpers/DarkMode.h>
+#include <foobar2000/SDK/coreDarkMode.h>
 
 #include <wil/com.h>
 #include <wil/resource.h>
