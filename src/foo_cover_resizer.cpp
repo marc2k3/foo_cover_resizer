@@ -26,9 +26,9 @@ namespace resizer
 
 	namespace settings
 	{
-		cfg_var_legacy::cfg_int type(guid_cfg_type, 0);
-		cfg_var_legacy::cfg_int format(guid_cfg_format, 0);
-		cfg_var_legacy::cfg_int size(guid_cfg_size, 500);
+		cfg_int type(guid_cfg_type, 0);
+		cfg_int format(guid_cfg_format, 0);
+		cfg_int size(guid_cfg_size, 500);
 	}
 
 	class InitQuit : public initquit

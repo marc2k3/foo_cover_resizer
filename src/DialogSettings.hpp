@@ -33,12 +33,12 @@ namespace resizer
 				m_combo_format.AddString(label.data());
 			}
 
-			m_combo_type.SetCurSel(settings::type);
-			m_combo_format.SetCurSel(settings::format);
+			m_combo_type.SetCurSel(static_cast<int>(settings::type));
+			m_combo_format.SetCurSel(static_cast<int>(settings::format));
 
 			if (m_show_size)
 			{
-				pfc::setWindowText(m_edit_size, pfc::format_uint(settings::size));
+				pfc::setWindowText(m_edit_size, pfc::format_int(settings::size));
 			}
 			else
 			{
