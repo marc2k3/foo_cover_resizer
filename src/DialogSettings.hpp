@@ -25,7 +25,7 @@ namespace resizer
 			const size_t count = album_art_ids::num_types();
 			for (size_t i = 0; i < count; ++i)
 			{
-				m_combo_type.AddString(string_wide_from_utf8_fast(album_art_ids::query_capitalized_name(i)));
+				m_combo_type.AddString(pfc::wideFromUTF8(album_art_ids::query_capitalized_name(i)));
 			}
 
 			for (const auto& [id, label] : formats)

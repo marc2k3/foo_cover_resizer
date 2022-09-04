@@ -8,12 +8,11 @@
 
 #include <foobar2000/helpers/foobar2000+atl.h>
 #include <foobar2000/SDK/coreDarkMode.h>
+#include <pfc/string-conv-lite.h>
 
 #include <wil/com.h>
 #include <wil/resource.h>
 #include <wincodec.h>
-
-using namespace pfc::stringcvt;
 
 #include "foo_cover_resizer.hpp"
 #include "resource.hpp"

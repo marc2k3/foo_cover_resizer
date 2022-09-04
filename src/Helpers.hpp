@@ -112,7 +112,7 @@ namespace resizer
 	{
 		pfc::string8 path;
 		if (uGetOpenFileName(parent, "Picture files|*.jpg;*.jpeg;*.png;*.bmp;*.gif;*.tiff;*.webp", 0, nullptr, "Browse for image", folder, path, FALSE) == FALSE) return false;
-		auto wpath = string_wide_from_utf8_fast(path);
+		auto wpath = pfc::wideFromUTF8(path);
 
 		wil::com_ptr_t<IStream> stream;
 		if (FAILED(SHCreateStreamOnFileEx(wpath, STGM_READ | STGM_SHARE_DENY_WRITE, GENERIC_READ, FALSE, nullptr, &stream))) return false;
