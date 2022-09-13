@@ -22,7 +22,7 @@ public:
 		return guid_context_group_utils;
 	}
 
-	bool context_get_display(uint32_t index, metadb_handle_list_cref handles, pfc::string_base& out, uint32_t& displayflags, const GUID& caller) override
+	bool context_get_display(uint32_t index, metadb_handle_list_cref, pfc::string_base& out, uint32_t&, const GUID&) override
 	{
 		get_item_name(index, out);
 		return true;
@@ -39,7 +39,7 @@ public:
 		return pfc::downcast_guarded<uint32_t>(context_items.size());
 	}
 
-	void context_command(uint32_t index, metadb_handle_list_cref handles, const GUID& caller) override
+	void context_command(uint32_t index, metadb_handle_list_cref handles, const GUID&) override
 	{
 		if (!api_check()) return;
 
@@ -49,8 +49,8 @@ public:
 		{
 			if (!choose_settings(hwnd, false)) return;
 
-			const Format format = formats[settings::format].id;
-			const GUID art_guid = album_art_ids::query_type(settings::type);
+			const Format format = get_format();
+			const GUID art_guid = get_type();
 			auto cb = fb2k::service_new<CoverConverterResizer>(CoverConverterResizer::Action::Convert, handles, format, art_guid);
 			threaded_process::get()->run_modeless(cb, threaded_process_flags, hwnd, "Converting covers...");
 		}
@@ -63,12 +63,12 @@ public:
 			if (!browse_for_image(hwnd, folder, source)) return;
 			if (!choose_settings(hwnd, false)) return;
 
-			const Format format = formats[settings::format].id;
+			const Format format = get_format();
 			if (FAILED(encode(format, source.get(), data))) return;
 
 			if (data.is_valid())
 			{
-				const GUID art_guid = album_art_ids::query_type(settings::type);
+				const GUID art_guid = get_type();
 				auto cb = fb2k::service_new<CoverAttachRemove>(handles, data, art_guid);
 				threaded_process::get()->run_modeless(cb, threaded_process_flags, hwnd, "Attaching cover...");
 			}

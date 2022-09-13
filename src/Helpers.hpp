@@ -4,6 +4,16 @@
 
 namespace resizer
 {
+	static Format get_format()
+	{
+		return formats[static_cast<size_t>(settings::format)].id;
+	}
+
+	static GUID get_type()
+	{
+		return album_art_ids::query_type(static_cast<size_t>(settings::type));
+	}
+
 	static HRESULT decode(IStream* stream, wil::com_ptr_t<IWICBitmapSource>& source)
 	{
 		wil::com_ptr_t<IWICBitmapDecoder> decoder;
