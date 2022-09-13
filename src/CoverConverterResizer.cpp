@@ -33,6 +33,7 @@ void CoverConverterResizer::run(threaded_process_status& status, abort_callback&
 		status.set_item_path(path);
 
 		if (!album_art_extractor::g_get_interface(extractor_ptr, path)) continue;
+		if (!album_art_editor::g_get_interface(editor_ptr, path)) continue;
 
 		try
 		{
@@ -64,10 +65,9 @@ void CoverConverterResizer::run(threaded_process_status& status, abort_callback&
 
 			if (data.is_empty()) continue;
 			auto lock = lock_api->acquire_write(path, abort);
-			album_art_editor::g_get_interface(editor_ptr, path);
-			album_art_editor_instance_ptr aaep = editor_ptr->open(nullptr, path, abort);
-			aaep->set(m_art_guid, data, abort);
-			aaep->commit(abort);
+			auto instance_ptr = editor_ptr->open(nullptr, path, abort);
+			instance_ptr->set(m_art_guid, data, abort);
+			instance_ptr->commit(abort);
 			success++;
 		}
 		catch (...) {}

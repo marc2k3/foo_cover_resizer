@@ -14,6 +14,7 @@ void CoverAttachRemove::on_done(HWND, bool was_aborted)
 
 void CoverAttachRemove::run(threaded_process_status& status, abort_callback& abort)
 {
+	album_art_editor::ptr editor_ptr;
 	auto lock_api = file_lock_manager::get();
 
 	const size_t count = m_handles.get_count();
@@ -30,27 +31,26 @@ void CoverAttachRemove::run(threaded_process_status& status, abort_callback& abo
 		status.set_progress(++index, count);
 		status.set_item_path(path);
 
-		album_art_editor::ptr ptr;
-		if (!album_art_editor::g_get_interface(ptr, path)) continue;
+		if (!album_art_editor::g_get_interface(editor_ptr, path)) continue;
 
 		try
 		{
 			auto lock = lock_api->acquire_write(path, abort);
-			album_art_editor_instance_ptr aaep = ptr->open(nullptr, path, abort);
+			auto instance_ptr = editor_ptr->open(nullptr, path, abort);
 
 			if (m_action == Action::Attach)
 			{
-				aaep->set(m_art_guid, m_data, abort);
+				instance_ptr->set(m_art_guid, m_data, abort);
 			}
 			else if (m_action == Action::Remove)
 			{
-				aaep->remove(album_art_ids::artist);
-				aaep->remove(album_art_ids::cover_back);
-				aaep->remove(album_art_ids::disc);
-				aaep->remove(album_art_ids::icon);
+				instance_ptr->remove(album_art_ids::artist);
+				instance_ptr->remove(album_art_ids::cover_back);
+				instance_ptr->remove(album_art_ids::disc);
+				instance_ptr->remove(album_art_ids::icon);
 			}
 
-			aaep->commit(abort);
+			instance_ptr->commit(abort);
 		}
 		catch (...) {}
 	}
