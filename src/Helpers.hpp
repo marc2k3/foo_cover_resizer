@@ -25,7 +25,7 @@ namespace resizer
 		return S_OK;
 	}
 
-	static HRESULT encode_webp(IWICBitmapSource* source, const WICRect& rect, album_art_data_ptr& data)
+	static HRESULT encode_webp(IWICBitmapSource* source, const WICRect& rect, float quality, album_art_data_ptr& data)
 	{
 		uint8_t* ptr = nullptr;
 		uint8_t* output = nullptr;
@@ -38,7 +38,7 @@ namespace resizer
 		RETURN_IF_FAILED(lock->GetDataPointer(&size, &ptr));
 		RETURN_IF_FAILED(lock->GetStride(&stride));
 
-		const size_t new_size = WebPEncodeBGRA(ptr, rect.Width, rect.Height, static_cast<int>(stride), static_cast<float>(settings::quality), &output);
+		const size_t new_size = WebPEncodeBGRA(ptr, rect.Width, rect.Height, static_cast<int>(stride), quality, &output);
 		if (new_size > 0)
 		{
 			data = album_art_data_impl::g_create(output, new_size);
@@ -52,24 +52,25 @@ namespace resizer
 	{
 		data.reset();
 
+		const float quality = static_cast<float>(settings::quality);
 		uint32_t width{}, height{};
 		RETURN_IF_FAILED(source->GetSize(&width, &height));
 		WICRect rect(0, 0, static_cast<int>(width), static_cast<int>(height));
 
 		if (format == Format::WEBP)
 		{
-			return encode_webp(source, rect, data);
+			return encode_webp(source, rect, quality, data);
 		}
 
 		PROPBAG2 options;
 		ZeroMemory(&options, sizeof(options));
 		options.pstrName = const_cast<LPOLESTR>(L"ImageQuality");
-		auto quality = _variant_t(settings::quality / 100.f);
+		auto vquality = _variant_t(quality / 100.f);
 
+		wil::com_ptr_t<IPropertyBag2> property_bag;
 		wil::com_ptr_t<IStream> stream;
 		wil::com_ptr_t<IWICBitmapEncoder> encoder;
 		wil::com_ptr_t<IWICBitmapFrameEncode> frame_encode;
-		wil::com_ptr_t<IPropertyBag2> property_bag;
 		wil::com_ptr_t<IWICStream> wic_stream;
 
 		RETURN_IF_FAILED(CreateStreamOnHGlobal(nullptr, TRUE, &stream));
@@ -78,7 +79,7 @@ namespace resizer
 		RETURN_IF_FAILED(g_imaging_factory->CreateEncoder(GUID_ContainerFormatJpeg, nullptr, &encoder));
 		RETURN_IF_FAILED(encoder->Initialize(wic_stream.get(), WICBitmapEncoderNoCache));
 		RETURN_IF_FAILED(encoder->CreateNewFrame(&frame_encode, &property_bag));
-		RETURN_IF_FAILED(property_bag->Write(0, &options, &quality));
+		RETURN_IF_FAILED(property_bag->Write(0, &options, &vquality));
 		RETURN_IF_FAILED(frame_encode->Initialize(property_bag.get()));
 		RETURN_IF_FAILED(frame_encode->SetSize(width, height));
 		RETURN_IF_FAILED(frame_encode->WriteSource(source, &rect));
