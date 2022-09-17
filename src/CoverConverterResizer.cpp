@@ -41,7 +41,7 @@ void CoverConverterResizer::run(threaded_process_status& status, abort_callback&
 			if (data.is_empty()) continue;
 
 			const uint8_t* ptr = static_cast<const uint8_t*>(data->get_ptr());
-			const uint32_t bytes = pfc::downcast_guarded<uint32_t>(data->get_size());
+			const uint32_t bytes = static_cast<uint32_t>(data->get_size());
 			wil::com_ptr_t<IStream> stream;
 			wil::com_ptr_t<IWICBitmapSource> source;
 			stream.attach(SHCreateMemStream(ptr, bytes));

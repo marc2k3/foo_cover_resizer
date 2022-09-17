@@ -36,7 +36,7 @@ public:
 
 	uint32_t get_num_items() override
 	{
-		return pfc::downcast_guarded<uint32_t>(context_items.size());
+		return static_cast<uint32_t>(context_items.size());
 	}
 
 	void context_command(uint32_t index, metadb_handle_list_cref handles, const GUID&) override
