@@ -38,7 +38,7 @@ namespace resizer
 		RETURN_IF_FAILED(lock->GetDataPointer(&size, &ptr));
 		RETURN_IF_FAILED(lock->GetStride(&stride));
 
-		const size_t new_size = WebPEncodeBGRA(ptr, rect.Width, rect.Height, static_cast<int>(stride), 95.f, &output);
+		const size_t new_size = WebPEncodeBGRA(ptr, rect.Width, rect.Height, static_cast<int>(stride), static_cast<float>(settings::quality), &output);
 		if (new_size > 0)
 		{
 			data = album_art_data_impl::g_create(output, new_size);
@@ -47,7 +47,6 @@ namespace resizer
 		}
 		return E_FAIL;
 	}
-
 
 	static HRESULT encode(Format format, IWICBitmapSource* source, album_art_data_ptr& data)
 	{
@@ -62,18 +61,25 @@ namespace resizer
 			return encode_webp(source, rect, data);
 		}
 
+		PROPBAG2 options;
+		ZeroMemory(&options, sizeof(options));
+		options.pstrName = const_cast<LPOLESTR>(L"ImageQuality");
+		auto quality = _variant_t(settings::quality / 100.f);
+
 		wil::com_ptr_t<IStream> stream;
 		wil::com_ptr_t<IWICBitmapEncoder> encoder;
 		wil::com_ptr_t<IWICBitmapFrameEncode> frame_encode;
+		wil::com_ptr_t<IPropertyBag2> property_bag;
 		wil::com_ptr_t<IWICStream> wic_stream;
 
 		RETURN_IF_FAILED(CreateStreamOnHGlobal(nullptr, TRUE, &stream));
 		RETURN_IF_FAILED(g_imaging_factory->CreateStream(&wic_stream));
 		RETURN_IF_FAILED(wic_stream->InitializeFromIStream(stream.get()));
-		RETURN_IF_FAILED(g_imaging_factory->CreateEncoder(format == Format::JPG ? GUID_ContainerFormatJpeg : GUID_ContainerFormatPng, nullptr, &encoder));
+		RETURN_IF_FAILED(g_imaging_factory->CreateEncoder(GUID_ContainerFormatJpeg, nullptr, &encoder));
 		RETURN_IF_FAILED(encoder->Initialize(wic_stream.get(), WICBitmapEncoderNoCache));
-		RETURN_IF_FAILED(encoder->CreateNewFrame(&frame_encode, nullptr));
-		RETURN_IF_FAILED(frame_encode->Initialize(nullptr));
+		RETURN_IF_FAILED(encoder->CreateNewFrame(&frame_encode, &property_bag));
+		RETURN_IF_FAILED(property_bag->Write(0, &options, &quality));
+		RETURN_IF_FAILED(frame_encode->Initialize(property_bag.get()));
 		RETURN_IF_FAILED(frame_encode->SetSize(width, height));
 		RETURN_IF_FAILED(frame_encode->WriteSource(source, &rect));
 		RETURN_IF_FAILED(frame_encode->Commit());

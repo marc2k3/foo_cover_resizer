@@ -20,6 +20,7 @@ namespace resizer
 		cfg_int type(guid_cfg_type, 0);
 		cfg_int format(guid_cfg_format, 0);
 		cfg_int size(guid_cfg_size, 500);
+		cfg_int quality(guid_cfg_quality, 95);
 	}
 
 	class InitQuit : public initquit

@@ -12,6 +12,7 @@
 
 #include <wil/com.h>
 #include <wil/resource.h>
+#include <comdef.h>
 #include <wincodec.h>
 
 #include "foo_cover_resizer.hpp"
