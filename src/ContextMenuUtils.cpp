@@ -14,6 +14,8 @@ class ContextMenuUtils : public contextmenu_item_simple
 public:
 	GUID get_item_guid(uint32_t index) override
 	{
+		if (index >= context_items.size()) uBugCheck();
+
 		return *context_items[index].guid;
 	}
 
@@ -24,12 +26,16 @@ public:
 
 	bool context_get_display(uint32_t index, metadb_handle_list_cref, pfc::string_base& out, uint32_t&, const GUID&) override
 	{
+		if (index >= context_items.size()) uBugCheck();
+
 		get_item_name(index, out);
 		return true;
 	}
 
 	bool get_item_description(uint32_t index, pfc::string_base& out) override
 	{
+		if (index >= context_items.size()) uBugCheck();
+
 		get_item_name(index, out);
 		return true;
 	}
@@ -41,6 +47,8 @@ public:
 
 	void context_command(uint32_t index, metadb_handle_list_cref handles, const GUID&) override
 	{
+		if (index >= context_items.size()) uBugCheck();
+
 		if (!api_check()) return;
 
 		const HWND hwnd = core_api::get_main_window();
@@ -82,6 +90,8 @@ public:
 
 	void get_item_name(uint32_t index, pfc::string_base& out) override
 	{
+		if (index >= context_items.size()) uBugCheck();
+
 		out = context_items[index].name;
 	}
 };
