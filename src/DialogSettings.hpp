@@ -81,7 +81,7 @@ namespace resizer
 
 		void OnUpdate(UINT, int, CWindow)
 		{
-			m_button_ok.EnableWindow(GetDlgItem(IDC_EDIT_QUALITY).GetWindowTextLengthW() > 0 && GetSize() >= 200 && GetQuality() <= 100);
+			m_button_ok.EnableWindow(GetDlgItem(IDC_EDIT_QUALITY).GetWindowTextLengthW() > 0 && GetQuality() <= 100 && (!m_show_size || GetSize() >= 200));
 		}
 
 		CButton m_button_ok;
