@@ -1,5 +1,5 @@
 ## 1.0.3
-- Fix bug with settings dialog where conversions without resizing was not allowed due to faulty logic which enabled the `OK` button.
+- Fix bug with settings dialog where conversions without resizing were not allowed due to faulty logic which enabled the `OK` button.
 
 ## 1.0.2
 - Support for saving as `PNG` has been removed.
