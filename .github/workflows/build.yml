@@ -21,8 +21,8 @@ jobs:
     - name: Set up vcpkg
       run: |
         vcpkg integrate install
-        vcpkg install libwebp wil wtl --triplet x86-windows
-        vcpkg install libwebp wil wtl --triplet x64-windows
+        vcpkg install wil wtl --triplet x86-windows
+        vcpkg install wil wtl --triplet x64-windows
 
     - name: Create component folder
       run: |
@@ -34,7 +34,6 @@ jobs:
         msbuild ${{ matrix.project }}\src\${{ matrix.project }}.sln -m -p:Platform=Win32 -p:Configuration=${{ matrix.configuration }}
         copy ${{ matrix.project }}\src\Win32\${{ matrix.configuration }}\${{ matrix.project }}.dll component
         copy ${{ matrix.project }}\src\Win32\${{ matrix.configuration }}\${{ matrix.project }}.pdb component
-        copy ${{ matrix.project }}\src\Win32\${{ matrix.configuration }}\webp.dll component
         cd ${{ matrix.project }} && git clean -fdx && git submodule foreach --recursive git clean -fdx
 
     - name: Build x64
@@ -42,7 +41,6 @@ jobs:
         msbuild ${{ matrix.project }}\src\${{ matrix.project }}.sln -m -p:Platform=x64 -p:Configuration=${{ matrix.configuration }}
         copy ${{ matrix.project }}\src\x64\${{ matrix.configuration }}\${{ matrix.project }}.dll component\x64
         copy ${{ matrix.project }}\src\x64\${{ matrix.configuration }}\${{ matrix.project }}.pdb component\x64
-        copy ${{ matrix.project }}\src\x64\${{ matrix.configuration }}\webp.dll component\x64
 
     - name: Upload with pdb
       if: startsWith(github.ref, 'refs/tags') && matrix.configuration == 'Release'

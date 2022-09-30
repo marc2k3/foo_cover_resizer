@@ -1,6 +1,8 @@
 #pragma once
 
-#include <webp/encode.h>
+#ifdef NDEBUG
+#include <../libwebp/encode.h>
+#endif
 
 namespace resizer
 {
@@ -27,6 +29,7 @@ namespace resizer
 
 	static HRESULT encode_webp(IWICBitmapSource* source, const WICRect& rect, float quality, album_art_data_ptr& data)
 	{
+#ifdef NDEBUG
 		uint8_t* ptr = nullptr;
 		uint8_t* output = nullptr;
 		uint32_t size{}, stride{};
@@ -45,6 +48,7 @@ namespace resizer
 			WebPFree(output);
 			return S_OK;
 		}
+#endif
 		return E_FAIL;
 	}
 
