@@ -6,4 +6,4 @@
 - You can now set the quality for `JPG`/`WebP` encoding. They both accept values between `0-100`. The previous default for `WebP` was `95`. I'm not sure about `JPG`.
 
 ## 1.0.1
--Initial release
+- Initial release
