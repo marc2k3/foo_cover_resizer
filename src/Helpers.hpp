@@ -27,9 +27,9 @@ namespace resizer
 		return S_OK;
 	}
 
+#ifdef NDEBUG
 	static HRESULT encode_webp(IWICBitmapSource* source, const WICRect& rect, float quality, album_art_data_ptr& data)
 	{
-#ifdef NDEBUG
 		uint8_t* ptr = nullptr;
 		uint8_t* output = nullptr;
 		uint32_t size{}, stride{};
@@ -48,9 +48,11 @@ namespace resizer
 			WebPFree(output);
 			return S_OK;
 		}
-#endif
 		return E_FAIL;
 	}
+#else
+	static HRESULT encode_webp(IWICBitmapSource*, const WICRect&, float, album_art_data_ptr&) { return E_FAIL; }
+#endif
 
 	static HRESULT encode(Format format, IWICBitmapSource* source, album_art_data_ptr& data)
 	{
