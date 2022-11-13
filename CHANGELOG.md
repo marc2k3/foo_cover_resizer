@@ -1,3 +1,6 @@
+### 1.0.4
+- Compiled with latest `foobar2000` `SDK`.
+
 ### 1.0.3
 - Fix bug with settings dialog where conversions without resizing were not allowed due to faulty logic which enabled the `OK` button.
 
