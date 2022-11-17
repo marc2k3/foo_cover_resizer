@@ -26,12 +26,12 @@ namespace resizer
 	class InitQuit : public initquit
 	{
 	public:
-		void on_init() override
+		void on_init() final
 		{
 			g_imaging_factory = wil::CoCreateInstanceNoThrow<IWICImagingFactory>(CLSID_WICImagingFactory);
 		}
 
-		void on_quit() override
+		void on_quit() final
 		{
 			g_imaging_factory.reset();
 		}
