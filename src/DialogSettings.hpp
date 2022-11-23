@@ -62,7 +62,7 @@ namespace resizer
 			return GetDlgItemInt(IDC_EDIT_SIZE);
 		}
 
-		void OnCloseCmd(UINT, int nID, CWindow)
+		void OnCloseCmd(uint32_t, int nID, CWindow)
 		{
 			if (nID == IDOK)
 			{
@@ -79,7 +79,7 @@ namespace resizer
 			EndDialog(nID);
 		}
 
-		void OnUpdate(UINT, int, CWindow)
+		void OnUpdate(uint32_t, int, CWindow)
 		{
 			m_button_ok.EnableWindow(GetDlgItem(IDC_EDIT_QUALITY).GetWindowTextLengthW() > 0 && GetQuality() <= 100 && (!m_show_size || GetSize() >= 200));
 		}
