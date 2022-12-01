@@ -30,8 +30,8 @@ namespace resizer
 	static HRESULT encode_webp(IWICBitmapSource* source, const WICRect& rect, float quality, album_art_data_ptr& data)
 	{
 #ifdef NDEBUG
-		uint8_t* ptr = nullptr;
-		uint8_t* output = nullptr;
+		uint8_t* ptr{};
+		uint8_t* output{};
 		uint32_t size{}, stride{};
 		wil::com_ptr_t<IWICBitmap> bitmap;
 		wil::com_ptr_t<IWICBitmapLock> lock;
@@ -90,7 +90,7 @@ namespace resizer
 		RETURN_IF_FAILED(frame_encode->Commit());
 		RETURN_IF_FAILED(encoder->Commit());
 
-		HGLOBAL hg = nullptr;
+		HGLOBAL hg{};
 		RETURN_IF_FAILED(GetHGlobalFromStream(stream.get(), &hg));
 		auto image = wil::unique_hglobal_locked(hg);
 		auto size = GlobalSize(image.get());
