@@ -1,12 +1,10 @@
 #include "stdafx.hpp"
 
-using namespace resizer;
-
 static const std::vector<ContextItem> context_items =
 {
-	{ &guid_context_command_convert, "Convert without resizng" },
-	{ &guid_context_command_convert_and_attach, "Browse for file, convert and attach" },
-	{ &guid_context_command_remove_all_except_front, "Remove all except front" },
+	{ &guids::context_command_convert, "Convert without resizng" },
+	{ &guids::context_command_convert_and_attach, "Browse for file, convert and attach" },
+	{ &guids::context_command_remove_all_except_front, "Remove all except front" },
 };
 
 class ContextMenuUtils : public contextmenu_item_simple
@@ -21,7 +19,7 @@ public:
 
 	GUID get_parent() final
 	{
-		return guid_context_group_utils;
+		return guids::context_group_utils;
 	}
 
 	bool context_get_display(uint32_t index, metadb_handle_list_cref, pfc::string_base& out, uint32_t&, const GUID&) final
@@ -60,7 +58,7 @@ public:
 			const Format format = get_format();
 			const GUID art_guid = get_type();
 			auto cb = fb2k::service_new<CoverConverterResizer>(CoverConverterResizer::Action::Convert, handles, format, art_guid);
-			threaded_process::get()->run_modeless(cb, threaded_process_flags, hwnd, "Converting covers...");
+			threaded_process::get()->run_modeless(cb, Component::threaded_process_flags, hwnd, "Converting covers...");
 		}
 		else if (index == 1)
 		{
@@ -78,13 +76,13 @@ public:
 			{
 				const GUID art_guid = get_type();
 				auto cb = fb2k::service_new<CoverAttachRemove>(handles, data, art_guid);
-				threaded_process::get()->run_modeless(cb, threaded_process_flags, hwnd, "Attaching cover...");
+				threaded_process::get()->run_modeless(cb, Component::threaded_process_flags, hwnd, "Attaching cover...");
 			}
 		}
 		else if (index == 2)
 		{
 			auto cb = fb2k::service_new<CoverAttachRemove>(handles);
-			threaded_process::get()->run_modeless(cb, threaded_process_flags, hwnd, "Removing covers...");
+			threaded_process::get()->run_modeless(cb, Component::threaded_process_flags, hwnd, "Removing covers...");
 		}
 	}
 
@@ -96,5 +94,5 @@ public:
 	}
 };
 
-static contextmenu_group_popup_factory g_context_group_utils(guid_context_group_utils, contextmenu_groups::root, "Cover Utils", 1);
+static contextmenu_group_popup_factory g_context_group_utils(guids::context_group_utils, contextmenu_groups::root, "Cover Utils", 1);
 FB2K_SERVICE_FACTORY(ContextMenuUtils);

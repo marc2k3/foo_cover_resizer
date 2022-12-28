@@ -1,11 +1,9 @@
 #include "stdafx.hpp"
 
-using namespace resizer;
-
 static const std::vector<ContextItem> context_items =
 {
-	{ &guid_context_command_resize, "Resize" },
-	{ &guid_context_command_resize_and_attach, "Browse for file, resize and attach" },
+	{ &guids::context_command_resize, "Resize" },
+	{ &guids::context_command_resize_and_attach, "Browse for file, resize and attach" },
 };
 
 class ContextMenuResize : public contextmenu_item_simple
@@ -20,7 +18,7 @@ public:
 
 	GUID get_parent() final
 	{
-		return guid_context_group_resize;
+		return guids::context_group_resize;
 	}
 
 	bool context_get_display(uint32_t index, metadb_handle_list_cref, pfc::string_base& out, uint32_t&, const GUID&) final
@@ -59,7 +57,7 @@ public:
 			const Format format = get_format();
 			const GUID art_guid = get_type();
 			auto cb = fb2k::service_new<CoverConverterResizer>(CoverConverterResizer::Action::Resize, handles, format, art_guid);
-			threaded_process::get()->run_modeless(cb, threaded_process_flags, hwnd, "Resizing covers...");
+			threaded_process::get()->run_modeless(cb, Component::threaded_process_flags, hwnd, "Resizing covers...");
 		}
 		else if (index == 1)
 		{
@@ -79,7 +77,7 @@ public:
 			{
 				const GUID art_guid = get_type();
 				auto cb = fb2k::service_new<CoverAttachRemove>(handles, data, art_guid);
-				threaded_process::get()->run_modeless(cb, threaded_process_flags, hwnd, "Attaching cover...");
+				threaded_process::get()->run_modeless(cb, Component::threaded_process_flags, hwnd, "Attaching cover...");
 			}
 		}
 	}
@@ -92,5 +90,5 @@ public:
 	}
 };
 
-static contextmenu_group_popup_factory g_context_group_resize(guid_context_group_resize, contextmenu_groups::root, component_name, 0);
+static contextmenu_group_popup_factory g_context_group_resize(guids::context_group_resize, contextmenu_groups::root, Component::name, 0);
 FB2K_SERVICE_FACTORY(ContextMenuResize);

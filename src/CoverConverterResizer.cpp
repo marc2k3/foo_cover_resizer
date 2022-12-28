@@ -1,14 +1,12 @@
 #include "stdafx.hpp"
 
-using namespace resizer;
-
 CoverConverterResizer::CoverConverterResizer(Action action, metadb_handle_list_cref handles, Format format, const GUID& art_guid) : m_action(action), m_handles(handles), m_format(format), m_art_guid(art_guid) {}
 
 void CoverConverterResizer::on_done(HWND, bool was_aborted)
 {
 	if (!was_aborted && m_art_guid == album_art_ids::cover_front)
 	{
-		standard_commands::run_context(guid_foo_cover_info_command, m_handles);
+		standard_commands::run_context(guids::foo_cover_info_command, m_handles);
 	}
 }
 
@@ -48,7 +46,7 @@ void CoverConverterResizer::run(threaded_process_status& status, abort_callback&
 
 			if (FAILED(decode(stream.get(), source)))
 			{
-				FB2K_console_formatter() << component_name << ": Unable to decode image data found in: " << path;
+				FB2K_console_formatter() << Component::name << ": Unable to decode image data found in: " << path;
 				continue;
 			}
 
@@ -72,5 +70,5 @@ void CoverConverterResizer::run(threaded_process_status& status, abort_callback&
 		}
 		catch (...) {}
 	}
-	FB2K_console_formatter() << component_name << ": " << success << " files were updated.";
+	FB2K_console_formatter() << Component::name << ": " << success << " files were updated.";
 }

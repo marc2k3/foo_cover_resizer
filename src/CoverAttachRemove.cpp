@@ -8,7 +8,7 @@ void CoverAttachRemove::on_done(HWND, bool was_aborted)
 {
 	if (!was_aborted && m_action == Action::Attach && m_art_guid == album_art_ids::cover_front)
 	{
-		standard_commands::run_context(resizer::guid_foo_cover_info_command, m_handles);
+		standard_commands::run_context(guids::foo_cover_info_command, m_handles);
 	}
 }
 

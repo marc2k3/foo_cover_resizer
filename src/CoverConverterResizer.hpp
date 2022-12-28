@@ -1,7 +1,5 @@
 #pragma once
 
-using resizer::Format;
-
 class CoverConverterResizer : public threaded_process_callback
 {
 public:
